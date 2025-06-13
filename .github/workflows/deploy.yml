@@ -37,6 +37,7 @@ jobs:
 
       - name: Run dbt build
         env:
+          DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
           DBT_SP_CLIENT_ID: ${{ secrets.DBT_SP_CLIENT_ID }}
           DBT_SP_CLIENT_SECRET: ${{ secrets.DBT_SP_CLIENT_SECRET }}
           DBT_SP_TENANT_ID: ${{ secrets.DBT_SP_TENANT_ID }}
