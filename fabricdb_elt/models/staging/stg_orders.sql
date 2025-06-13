@@ -1,4 +1,11 @@
--- Auto-generated DBT model for orders
-{{ config(materialized='view') }}
+-- Fabric: stg_orders
 
-SELECT * FROM dbo.orders
+
+-- {{ config(materialized='view') }}
+
+SELECT
+    order_id,
+    customer_id,
+    order_date,
+    total_amount
+FROM dbo.orders

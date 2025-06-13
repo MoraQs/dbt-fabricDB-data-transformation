@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: customer_dim
+    description: "Dimension table with cleaned and enriched customer data"
+    columns:
+      - name: customerId
+        description: "Unique identifier for each customer"
+        tests:
+          - not_null
+          - unique
+
+      - name: customerName
+        description: "Full name of the customer"
+
+      - name: customerEmail
+        description: "Email address of the customer"
+
+      - name: city
+        description: "City where the customer resides"
+
+  - name: products_dim
+    description: "Dimension table listing products available for sale"
+    columns:
+      - name: productId
+        description: "Unique identifier for each product"
+        tests:
+          - not_null
+          - unique
+
+      - name: productName
+        description: "Name or label of the product"
+
+      - name: productCategory
+        description: "Category of product"
+
+  - name: orders_fact
+    description: "Fact table summarizing orders with total revenue and item counts"
+    columns:
+      - name: order_id
+        description: "Order ID"
+        tests:
+          - not_null
+
+      - name: order_item_id
+        description: "Unique identifier for each order item"
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "Customer who placed the order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('customer_dim')
+              field: customerId
+
+      - name: order_date
+        description: "Date the order was placed"
+
+      - name: line_total
+        description: "Total value of the order"
+
+      - name: quantity_sold
+        description: "Total quantity of products sold in the order"
+
+      - name: product_id
+        description: "Product sold in the order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('products_dim')
+              field: productId
+

@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: int_customer_orders
+    description: "Joins stg_orders, stg_order_items, and stg_products to prepare enriched order-level data with line totals."
+    columns:
+      - name: order_id
+        description: "Unique identifier for the order"
+        tests:
+          - not_null
+
+      - name: order_item_id
+        description: "Unique identifier for the order item"
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "ID of the customer placing the order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+
+      - name: customer_name
+        description: "Customer's full name"
+
+      - name: product_id
+        description: "ID of the product purchased"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+
+      - name: quantity
+        description: "Quantity of product purchased"
+
+      - name: price
+        description: "Price per unit of the product"
+
+      - name: line_amount
+        description: "Computed value = quantity * unit_price"
+
+      - name: order_date
+        description: "Date the order was placed"
+        tests:
+          - not_null
