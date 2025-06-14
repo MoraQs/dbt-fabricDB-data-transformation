@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - feature/*
+
   pull_request:
     branches:
       - main
@@ -13,6 +14,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    env:
+      DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
+      DBT_SP_CLIENT_ID: ${{ secrets.DBT_SP_CLIENT_ID }}
+      DBT_SP_CLIENT_SECRET: ${{ secrets.DBT_SP_CLIENT_SECRET }}
+      DBT_SP_TENANT_ID: ${{ secrets.DBT_SP_TENANT_ID }}
 
     steps:
       - name: Checkout repo
@@ -27,18 +34,8 @@ jobs:
         run: |
           pip install dbt-core==1.8.7 dbt-sqlserver==1.8.7
 
-      - name: Create profiles.yml
-        run: |
-          mkdir -p ~/.dbt
-          echo "${{ secrets.DBT_PROFILES_YML }}" > ~/.dbt/profiles.yml
-
       - name: Run dbt deps
         run: dbt deps --project-dir fabricdb_elt
 
       - name: Run dbt build
-        env:
-          DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
-          DBT_SP_CLIENT_ID: ${{ secrets.DBT_SP_CLIENT_ID }}
-          DBT_SP_CLIENT_SECRET: ${{ secrets.DBT_SP_CLIENT_SECRET }}
-          DBT_SP_TENANT_ID: ${{ secrets.DBT_SP_TENANT_ID }}
         run: dbt build --project-dir fabricdb_elt --target prod
