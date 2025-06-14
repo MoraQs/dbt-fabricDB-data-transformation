@@ -4,20 +4,11 @@ on:
   push:
     branches:
       - main
-      - feature/*
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
-    env:
-      DBT_SP_CLIENT_ID: ${{ secrets.DBT_SP_CLIENT_ID }}
-      DBT_SP_CLIENT_SECRET: ${{ secrets.DBT_SP_CLIENT_SECRET }}
-      DBT_SP_TENANT_ID: ${{ secrets.DBT_SP_TENANT_ID }}
 
     steps:
       - name: Checkout repo
@@ -32,22 +23,19 @@ jobs:
         run: |
           pip install dbt-core==1.8.7 dbt-sqlserver==1.8.7
 
-      - name: Create dbt profiles directory
-        run: mkdir -p ~/.dbt
-
-      - name: Write dbt profile from secret
+      - name: Decode base64 and create profiles.yml
+        env:
+          DBT_PROFILES_YML_B64: ${{ secrets.DBT_PROFILES_YML_B64 }}
         run: |
-          echo "${{ secrets.DBT_PROFILES_YML }}" > ~/.dbt/profiles.yml
-
-      - name: Verify profile creation
-        run: |
-          echo "Listing .dbt directory:"
-          ls -la ~/.dbt
-          echo "Contents of profiles.yml:"
-          cat ~/.dbt/profiles.yml
+          mkdir -p ~/.dbt
+          echo "$DBT_PROFILES_YML_B64" | base64 --decode > ~/.dbt/profiles.yml
 
       - name: Run dbt deps
         run: dbt deps --project-dir fabricdb_elt
 
       - name: Run dbt build
-        run: dbt build fabricdb_elt --target prod
+        env:
+          DBT_SP_CLIENT_ID: ${{ secrets.DBT_SP_CLIENT_ID }}
+          DBT_SP_CLIENT_SECRET: ${{ secrets.DBT_SP_CLIENT_SECRET }}
+          DBT_SP_TENANT_ID: ${{ secrets.DBT_SP_TENANT_ID }}
+        run: dbt build --project-dir fabricdb_elt --target prod
