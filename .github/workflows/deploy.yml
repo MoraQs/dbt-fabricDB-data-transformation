@@ -62,7 +62,13 @@ jobs:
 
 
   PROD:
+    name: Deploy to Production
     runs-on: ubuntu-latest
+
+    needs: UAT
+    environment:
+      name: production
+      url: https://github.com/MoraQs/dbt-fabricDB-data-transformation/actions/runs/15655809473/job/44106739729
 
     steps:
       - name: Checkout repo
