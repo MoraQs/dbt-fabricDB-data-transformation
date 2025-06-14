@@ -23,9 +23,14 @@ jobs:
       # Install ODBC Driver 17
       - name: Install ODBC Driver 17 for SQL Server
         run: |
-          sudo su
+          # Exit immediately if a command exits with a non-zero status.
+          # Treat unset variables as an error when substituting.
+          # Exit if a command in a pipeline fails.
+          set -euxo pipefail
+
           # Import the public key for the Microsoft official package repository
-          curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+          # Using sudo for curl and piping output to sudo apt-key add for robustness.
+          sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 
           # Register the Microsoft Ubuntu repository for SQL Server
           # Choose the correct distribution (e.g., Ubuntu 22.04 - jammy)
@@ -33,22 +38,22 @@ jobs:
           # 'lsb_release -cs' will give you the codename like 'jammy'
           UBUNTU_RELEASE_CODE=$(lsb_release -cs)
           if [ "${UBUNTU_RELEASE_CODE}" = "jammy" ]; then
-              echo "deb [arch=amd64,trusted=yes] https://packages.microsoft.com/ubuntu/22.04/prod ${UBUNTU_RELEASE_CODE} main" > /etc/apt/sources.list.d/mssql-release.list
+              echo "deb [arch=amd64,trusted=yes] https://packages.microsoft.com/ubuntu/22.04/prod ${UBUNTU_RELEASE_CODE} main" | sudo tee /etc/apt/sources.list.d/mssql-release.list
           elif [ "${UBUNTU_RELEASE_CODE}" = "focal" ]; then
-              echo "deb [arch=amd64,trusted=yes] https://packages.microsoft.com/ubuntu/20.04/prod ${UBUNTU_RELEASE_CODE} main" > /etc/apt/sources.list.d/mssql-release.list
+              echo "deb [arch=amd64,trusted=yes] https://packages.microsoft.com/ubuntu/20.04/prod ${UBUNTU_RELEASE_CODE} main" | sudo tee /etc/apt/sources.list.d/mssql-release.list
           else
               echo "Unsupported Ubuntu release: ${UBUNTU_RELEASE_CODE}"
               exit 1
           fi
 
           # Update the list of available packages
-          apt-get update
+          sudo apt-get update
 
           # Install unixODBC development headers and the ODBC Driver 17
-          ACCEPT_EULA=Y apt-get install -y unixodbc-dev msodbcsql17
+          # ACCEPT_EULA=Y is crucial to automatically accept the license.
+          sudo ACCEPT_EULA=Y apt-get install -y unixodbc-dev msodbcsql17
           # Optional: install mssql-tools if you need sqlcmd or bcp utilities for debugging
-          # ACCEPT_EULA=Y apt-get install -y mssql-tools
-          exit
+          # sudo ACCEPT_EULA=Y apt-get install -y mssql-tools
 
       - name: Install dbt and dependencies
         run: |
