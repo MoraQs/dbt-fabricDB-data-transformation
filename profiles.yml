@@ -1,0 +1,28 @@
+# fabricdb_elt:
+#   target: prod
+#   outputs:
+#     prod:
+#       type: sqlserver
+#       driver: 'ODBC Driver 18 for SQL Server'
+#       server: ttcxzh37dhhetma2y22gr4ayd4-2ja77tnmhs7e7l5wmr553l6stm.database.fabric.microsoft.com
+#       database: 'fabricDB-e577ac96-a415-4d43-839c-a690ceace260'
+#       schema: mart
+#       authentication: ActiveDirectoryServicePrincipal
+#       client_id: "{{ env_var('DBT_SP_CLIENT_ID') }}"
+#       client_secret: "{{ env_var('DBT_SP_CLIENT_SECRET') }}"
+#       tenant_id: "{{ env_var('DBT_SP_TENANT_ID') }}"
+#       encrypt: True
+#       trust_cert: False
+
+#     uat:
+#       type: sqlserver
+#       driver: 'ODBC Driver 18 for SQL Server'
+#       server: ttcxzh37dhhetma2y22gr4ayd4-2ja77tnmhs7e7l5wmr553l6stm.database.fabric.microsoft.com
+#       database: 'fabricDB-e577ac96-a415-4d43-839c-a690ceace260'
+#       schema: uat
+#       authentication: ActiveDirectoryServicePrincipal
+#       client_id: "{{ env_var('DBT_SP_CLIENT_ID') }}"
+#       client_secret: "{{ env_var('DBT_SP_CLIENT_SECRET') }}"
+#       tenant_id: "{{ env_var('DBT_SP_TENANT_ID') }}"
+#       encrypt: True
+#       trust_cert: False
