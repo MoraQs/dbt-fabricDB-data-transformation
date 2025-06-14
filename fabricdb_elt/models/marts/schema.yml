@@ -4,16 +4,16 @@ models:
   - name: customer_dim
     description: "Dimension table with cleaned and enriched customer data"
     columns:
-      - name: customerId
+      - name: customer_id
         description: "Unique identifier for each customer"
         tests:
           - not_null
           - unique
 
-      - name: customerName
+      - name: customer_name
         description: "Full name of the customer"
 
-      - name: customerEmail
+      - name: customer_email
         description: "Email address of the customer"
 
       - name: city
@@ -22,16 +22,16 @@ models:
   - name: products_dim
     description: "Dimension table listing products available for sale"
     columns:
-      - name: productId
+      - name: product_id
         description: "Unique identifier for each product"
         tests:
           - not_null
           - unique
 
-      - name: productName
+      - name: product_name
         description: "Name or label of the product"
 
-      - name: productCategory
+      - name: product_category
         description: "Category of product"
 
   - name: orders_fact
@@ -42,7 +42,7 @@ models:
         tests:
           - not_null
 
-      - name: order_item_id
+      - name: item_id
         description: "Unique identifier for each order item"
         tests:
           - not_null
@@ -53,7 +53,7 @@ models:
           - not_null
           - relationships:
               to: ref('customer_dim')
-              field: customerId
+              field: customer_id
 
       - name: order_date
         description: "Date the order was placed"
@@ -61,7 +61,7 @@ models:
       - name: line_total
         description: "Total value of the order"
 
-      - name: quantity_sold
+      - name: quantity
         description: "Total quantity of products sold in the order"
 
       - name: product_id
@@ -70,5 +70,5 @@ models:
           - not_null
           - relationships:
               to: ref('products_dim')
-              field: productId
+              field: product_id
 

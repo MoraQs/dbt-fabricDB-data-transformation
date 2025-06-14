@@ -2,12 +2,9 @@
 -- It is used to create a staging view for the products table.
 -- Fabric: stg_products
 
-
--- {{ config(materialized='view') }}
-
 SELECT
-    product_id as productId,
-    product_name as productName,
-    category as productCategory,
+    product_id,
+    product_name,
+    category as product_category,
     price
-FROM dbo.products
+FROM {{ source('fabricdb', 'products') }}
