@@ -39,13 +39,12 @@ jobs:
         run: |
           echo "${{ secrets.DBT_PROFILES_YML }}" > ~/.dbt/profiles.yml
 
-- name: Verify profile creation
-  run: |
-    echo "Listing .dbt directory:"
-    ls -la ~/.dbt
-    echo "Contents of profiles.yml:"
-    cat ~/.dbt/profiles.yml
-
+      - name: Verify profile creation
+        run: |
+          echo "Listing .dbt directory:"
+          ls -la ~/.dbt
+          echo "Contents of profiles.yml:"
+          cat ~/.dbt/profiles.yml
 
       - name: Run dbt deps
         run: dbt deps --project-dir fabricdb_elt
