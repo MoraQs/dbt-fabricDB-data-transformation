@@ -1,24 +1,7 @@
 
-# 📦 dbt-fabricDB-data-transformation
+# 🚀 dbt-Powered Data Transformation Pipeline on Microsoft Fabric SQL Database with Environment-Specific CI/CD (DEV → UAT → PROD)
 
 This repository contains a dbt project configured to run against **Microsoft Fabric SQL Database (Preview)** using GitHub Actions. It supports multi-environment deployment (DEV, UAT, PROD), automated testing, and gated production approvals.
-
-## 📋 Table of Contents
-
-- [📦 dbt-fabricDB-data-transformation](#-dbt-fabricdb-data-transformation)
-  - [📋 Table of Contents](#-table-of-contents)
-  - [🛠 Project Structure](#-project-structure)
-  - [🚀 CI/CD Workflow Overview](#-cicd-workflow-overview)
-  - [🔐 Secrets \& Profiles Setup](#-secrets--profiles-setup)
-    - [1. Encode Your `profiles.yml`](#1-encode-your-profilesyml)
-    - [2. Store Secrets in GitHub](#2-store-secrets-in-github)
-  - [🧪 Local Testing](#-local-testing)
-  - [🧱 GitHub Actions Workflow](#-github-actions-workflow)
-  - [👩‍⚖️ UAT and Prod Deployment Logic](#️-uat-and-prod-deployment-logic)
-    - [Schema Naming](#schema-naming)
-    - [Model Configuration](#model-configuration)
-  - [🔐 Production Environment Approval](#-production-environment-approval)
-  - [📎 Appendix – Extra Tips](#-appendix--extra-tips)
 
 ## 🛠 Project Structure
 
@@ -183,7 +166,7 @@ jobs:
 ### Schema Naming
 
 - UAT uses schema: `uat`
-- Prod uses schema: `mart`
+- PROD uses schema: `mart`
 - All logic is controlled in `profiles.yml`
 
 ### Model Configuration
