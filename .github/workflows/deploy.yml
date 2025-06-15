@@ -46,19 +46,19 @@ jobs:
       - name: Run dbt deps
         run: dbt deps --project-dir fabricdb_elt
 
-      - name: Run dbt tests
-        env:
-          DBT_SP_CLIENT_ID: ${{ secrets.DBT_SP_CLIENT_ID }}
-          DBT_SP_CLIENT_SECRET: ${{ secrets.DBT_SP_CLIENT_SECRET }}
-          DBT_SP_TENANT_ID: ${{ secrets.DBT_SP_TENANT_ID }}
-        run: dbt test --project-dir fabricdb_elt --target uat
-
       - name: Run dbt build
         env:
           DBT_SP_CLIENT_ID: ${{ secrets.DBT_SP_CLIENT_ID }}
           DBT_SP_CLIENT_SECRET: ${{ secrets.DBT_SP_CLIENT_SECRET }}
           DBT_SP_TENANT_ID: ${{ secrets.DBT_SP_TENANT_ID }}
         run: dbt build --project-dir fabricdb_elt --target uat
+
+      - name: Run dbt tests
+        env:
+          DBT_SP_CLIENT_ID: ${{ secrets.DBT_SP_CLIENT_ID }}
+          DBT_SP_CLIENT_SECRET: ${{ secrets.DBT_SP_CLIENT_SECRET }}
+          DBT_SP_TENANT_ID: ${{ secrets.DBT_SP_TENANT_ID }}
+        run: dbt test --project-dir fabricdb_elt --target uat
 
 
   PROD:
