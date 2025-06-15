@@ -68,8 +68,7 @@ jobs:
     needs: UAT
     environment:
       name: production
-      url: https://github.com/MoraQs/dbt-fabricDB-data-transformation/actions/runs/15655809473/job/44106739729
-
+      # url: https://github.com/MoraQs/dbt-fabricDB-data-transformation/actions/runs/15655809473/job/44106739729
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
