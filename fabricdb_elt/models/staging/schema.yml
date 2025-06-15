@@ -2,22 +2,22 @@ version: 2
 
 sources:
   - name: fabricdb
-    schema: stg
+    schema: dbo
     description: "Staging schema containing cleaned views of raw source data for the fabricdb project"
     tables:
       - name: customers
         description: "Dimension table with cleaned and enriched customer data"
         columns:
-          - name: customerId
+          - name: customer_id
             description: "Unique identifier for each customer"
             tests:
               - not_null
               - unique
 
-          - name: customerName
+          - name: name
             description: "Full name of the customer"
 
-          - name: customerEmail
+          - name: email
             description: "Email address of the customer"
 
           - name: city
@@ -31,17 +31,20 @@ sources:
             tests:
               - not_null
               - unique
+
           - name: customer_id
             description: "Customer who placed the order"
             tests:
               - not_null
               - relationships:
-                  to: ref('customers')
+                  to: source('fabricdb', 'customers')
                   field: customer_id
+
           - name: order_date
             description: "The date the order was placed"
-          - name: status
-            description: "Current status of the order"
+
+          - name: total_amount
+            description: "Total amount for the order"
 
       - name: products
         description: "Catalog of products available for sale"
@@ -51,36 +54,40 @@ sources:
             tests:
               - not_null
               - unique
+
           - name: product_name
             description: "Name of the product"
+
           - name: category
             description: "Category under which the product falls"
+
           - name: price
             description: "Standard unit price of the product"
 
       - name: order_items
         description: "Line-item breakdown of products within each order"
         columns:
-          - name: order_item_id
+          - name: item_id
             description: "Unique identifier for each line item"
             tests:
               - not_null
               - unique
+
           - name: order_id
             description: "Order to which this line item belongs"
             tests:
               - not_null
               - relationships:
-                  to: ref('orders')
+                  to: source('fabricdb', 'orders')
                   field: order_id
+
           - name: product_id
             description: "Product included in the line item"
             tests:
               - not_null
               - relationships:
-                  to: ref('products')
+                  to: source('fabricdb', 'products')
                   field: product_id
+
           - name: quantity
             description: "Number of units ordered"
-          - name: unit_price
-            description: "Price per unit at time of order"

@@ -9,7 +9,7 @@ models:
         tests:
           - not_null
 
-      - name: order_item_id
+      - name: item_id
         description: "Unique identifier for the order item"
         tests:
           - not_null

@@ -39,4 +39,3 @@ models:
       +materialized: ephemeral
     marts:
       +materialized: table
-      +schema: mart

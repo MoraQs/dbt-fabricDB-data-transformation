@@ -4,11 +4,11 @@
 
 SELECT
     order_date,
-    order_item_id,
+    item_id,
     order_id,
     product_id,
     customer_id,
-    quantity_sold,
+    quantity,
     line_amount
 FROM
     {{ ref('int_customer_orders') }}
